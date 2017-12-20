@@ -9,6 +9,7 @@ class Level(object):
 
     background_color = None
     background_image = None
+    foreground_image = None
     textures = {}
     tilemap = []
 
@@ -18,3 +19,4 @@ class Level(object):
 
     def __init__(self, pygame):
         self.background_image = pygame.image.load('./images/home_background.png')
+        self.foreground_image = pygame.image.load('./images/home_foreground.png')

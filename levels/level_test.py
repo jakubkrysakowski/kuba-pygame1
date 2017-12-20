@@ -12,6 +12,7 @@ class Level(object):
 
     background_color = (158, 180, 216)
     background_image = None
+    foreground_image = None
     textures = {}
 
     tilemap = [
