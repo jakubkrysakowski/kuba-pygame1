@@ -9,9 +9,13 @@ class ClickPointer(object):
     CIRCLE_RADIUS = 8
     position = None
     click_time = None
+    floor = None
+    floor_y = None
 
-    def click(self, position):
+    def click(self, position, floor, floor_y):
         self.position = position
+        self.floor = floor
+        self.floor_y = floor_y
         self.click_time = time.time()
 
     def draw(self, screen):

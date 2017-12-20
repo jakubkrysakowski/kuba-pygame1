@@ -16,9 +16,9 @@ class Menu(object):
 
         screen_width = pygame.display.Info().current_w
         self.buttons = [
-            menu_button.MenuButton('Level Test', screen_width / 2, 70,  lambda: self.openLevel('level_test')),
-            menu_button.MenuButton('Level 1',    screen_width / 2, 210, lambda: self.openLevel('level1')),
-            menu_button.MenuButton('Exit',       screen_width / 2, 350, lambda: pygame.quit())
+            #menu_button.MenuButton('Level Test', screen_width / 2, 70,  lambda: self.openLevel('level_test')),
+            menu_button.MenuButton('Start',    screen_width / 2, 210, lambda: self.openLevel('level1')),
+            menu_button.MenuButton('Exit',     screen_width / 2, 350, lambda: pygame.quit())
         ]
 
     def openLevel(self, level):

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-import math
 import player
+import math
 from gui import click_pointer
 
 class Game(object):
@@ -17,7 +17,8 @@ class Game(object):
         self.fps = 60
         self.done = False
         self.level = level
-        self.player.position = level.initial_player_position
+        self.player.position_x = level.initial_player_position_x
+        self.player.current_floor = level.initial_floor
         self.player.facing = level.initial_player_facing
         self.click_pointer = click_pointer.ClickPointer()
 
@@ -40,28 +41,31 @@ class Game(object):
                     self.screen.blit(self.level.textures[textureIndex], (column * self.level.TILESIZE, row * self.level.TILESIZE))
 
     def drawPlayer(self, dt):
-        self.screen.blit(self.player.getTile(), self.player.position)
+        self.screen.blit(self.player.getTile(), (self.player.position_x, self.level.getFloorY(self.player.current_floor) - self.player.HEIGHT))
 
     def eventLoop(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
                 self.done = True
             elif event.type == pygame.MOUSEBUTTONUP:
-                self.click_pointer.click(pygame.mouse.get_pos())
+                floorIndex = self.level.getFloorIndex(pygame.mouse.get_pos()[1])
+                floorY = self.level.getFloorY(floorIndex)
+                self.click_pointer.click(pygame.mouse.get_pos(), floorIndex, floorY)
 
     def update(self, dt):
-        self.player.is_walking = False
-
-        if pygame.key.get_pressed()[pygame.K_LEFT] != 0:
-            self.player.facing = -1;
-            self.player.is_walking = True
-
-        if pygame.key.get_pressed()[pygame.K_RIGHT] != 0:
-            self.player.facing = 1;
-            self.player.is_walking = True
-
-        if (self.player.is_walking):
-            self.player.position = (self.player.position[0] + (self.player.speed * self.player.facing), self.player.position[1])
+        if self.click_pointer.position != None:
+            if self.click_pointer.floor != self.player.current_floor:
+                # player is on different floor - go to lift (hidden staircase)
+                if math.fabs(self.level.LIFT_X - self.player.position_x) > self.level.LIFT_MARGIN:
+                    # go to lift
+                    self.player.goToLift(self.level.LIFT_X, dt)
+                else:
+                    # player is inside the lift, change floor
+                    self.player.position_x = self.level.LIFT_X
+                    self.player.current_floor = self.click_pointer.floor
+            else:
+                # player is on target floor - go to point
+                self.player.goTo(self.click_pointer, dt)
 
     def draw(self, dt):
         self.drawBackground()
