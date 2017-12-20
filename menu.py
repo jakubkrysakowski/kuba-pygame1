@@ -35,7 +35,6 @@ class Menu(object):
             elif event.type == pygame.MOUSEBUTTONUP:
                 for button in self.buttons:
                     if button.checkMouseOver(pygame.mouse.get_pos()):
-                        #self.openLevel(button.level)
                         button.click_callback()
 
     def update(self):

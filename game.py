@@ -4,9 +4,11 @@
 import pygame
 import math
 import player
+from gui import click_pointer
 
 class Game(object):
     level = None
+    click_pointer = None
 
     def __init__(self, level):
         self.screen = pygame.display.get_surface()
@@ -17,6 +19,7 @@ class Game(object):
         self.level = level
         self.player.position = level.initial_player_position
         self.player.facing = level.initial_player_facing
+        self.click_pointer = click_pointer.ClickPointer()
 
     def drawBackground(self):
         if self.level.background_color != None:
@@ -43,6 +46,8 @@ class Game(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
                 self.done = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.click_pointer.click(pygame.mouse.get_pos())
 
     def update(self, dt):
         self.player.is_walking = False
@@ -55,9 +60,6 @@ class Game(object):
             self.player.facing = 1;
             self.player.is_walking = True
 
-        #if pygame.mouse.get_pressed()[0]:
-        #    print(pygame.mouse.get_pos()) #debug
-
         if (self.player.is_walking):
             self.player.position = (self.player.position[0] + (self.player.speed * self.player.facing), self.player.position[1])
 
@@ -66,6 +68,7 @@ class Game(object):
         self.drawObjects(dt)
         self.drawPlayer(dt)
         self.drawForeground()
+        self.click_pointer.draw()
         pygame.display.flip()
 
     def main_loop(self):
