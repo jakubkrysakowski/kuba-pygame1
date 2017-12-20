@@ -68,7 +68,7 @@ class Game(object):
         self.drawObjects(dt)
         self.drawPlayer(dt)
         self.drawForeground()
-        self.click_pointer.draw()
+        self.click_pointer.draw(self.screen)
         pygame.display.flip()
 
     def main_loop(self):
