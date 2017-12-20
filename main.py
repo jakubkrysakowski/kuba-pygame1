@@ -17,10 +17,6 @@ def getLevel(level_name):
     return globals()[level_name].Level(pygame)
 
 if __name__ == "__main__":
-    # todo: add level changing
-    #level = level_test.Level(pygame)
-    #level = level1.Level(pygame)
-
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.init()
     pygame.display.set_caption(CAPTION)
