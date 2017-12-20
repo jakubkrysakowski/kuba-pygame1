@@ -3,78 +3,20 @@
 
 import pygame
 import math
+import player
 
 class Game(object):
     level = None
 
-    PLAYER_IDLE_LEFT = 0
-    PLAYER_IDLE_RIGHT = 1
-    PLAYER_WALK_LEFT = 2
-    PLAYER_WALK_RIGHT = 3
-
-    PLAYER_SEQUENCE_LENGTH_IDLE = 2
-    PLAYER_SEQUENCE_LENGTH_WALK = 2
-
-    PLAYER_TILES_CHANGE_SPEED = 0.005
-
-    player_textures = {
-        PLAYER_IDLE_LEFT: [
-            pygame.image.load('./images/character/idleA1.png'),
-            pygame.image.load('./images/character/idleA2.png')
-        ],
-
-        PLAYER_IDLE_RIGHT: [
-            pygame.transform.flip(pygame.image.load('./images/character/idleA1.png'), True, False),
-            pygame.transform.flip(pygame.image.load('./images/character/idleA2.png'), True, False)
-        ],
-
-        PLAYER_WALK_LEFT: [
-            pygame.image.load('./images/character/walkA1.png'),
-            pygame.image.load('./images/character/walkA2.png')
-        ],
-
-        PLAYER_WALK_RIGHT: [
-            pygame.transform.flip(pygame.image.load('./images/character/walkA1.png'), True, False),
-            pygame.transform.flip(pygame.image.load('./images/character/walkA2.png'), True, False)
-        ]
-
-    }
-
-    # TODO: player class
-    player_position = (0,0)
-    player_facing = 1
-    player_is_walking = False
-    player_speed = 5
-
     def __init__(self, level):
         self.screen = pygame.display.get_surface()
+        self.player = player.Player()
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.done = False
         self.level = level
-        self.player_position = level.initial_player_position
-        self.player_facing = level.initial_player_facing
-
-    def getPlayerTile(self, dt):
-        # defaults
-        sequence_frame = 0
-        tile_group = tile_group = self.PLAYER_IDLE_RIGHT
-
-        if self.player_is_walking:
-            sequence_frame = int((math.floor(pygame.time.get_ticks() * self.PLAYER_TILES_CHANGE_SPEED) % self.PLAYER_SEQUENCE_LENGTH_WALK))
-            if self.player_facing >= 0:
-                tile_group = self.PLAYER_WALK_RIGHT
-            else:
-                tile_group = self.PLAYER_WALK_LEFT
-        else: # Idle
-            sequence_frame = int((math.floor(pygame.time.get_ticks() * self.PLAYER_TILES_CHANGE_SPEED) % self.PLAYER_SEQUENCE_LENGTH_IDLE))
-
-            if self.player_facing >= 0:
-                tile_group = self.PLAYER_IDLE_RIGHT
-            else:
-                tile_group = self.PLAYER_IDLE_LEFT
-
-        return self.player_textures[tile_group][sequence_frame]
+        self.player.position = level.initial_player_position
+        self.player.facing = level.initial_player_facing
 
     def drawBackground(self):
         if self.level.background_color != None:
@@ -95,7 +37,7 @@ class Game(object):
                     self.screen.blit(self.level.textures[textureIndex], (column * self.level.TILESIZE, row * self.level.TILESIZE))
 
     def drawPlayer(self, dt):
-        self.screen.blit(self.getPlayerTile(dt), self.player_position)
+        self.screen.blit(self.player.getTile(), self.player.position)
 
     def eventLoop(self):
         for event in pygame.event.get():
@@ -103,21 +45,21 @@ class Game(object):
                 self.done = True
 
     def update(self, dt):
-        self.player_is_walking = False
+        self.player.is_walking = False
 
         if pygame.key.get_pressed()[pygame.K_LEFT] != 0:
-            self.player_facing = -1;
-            self.player_is_walking = True
+            self.player.facing = -1;
+            self.player.is_walking = True
 
         if pygame.key.get_pressed()[pygame.K_RIGHT] != 0:
-            self.player_facing = 1;
-            self.player_is_walking = True
+            self.player.facing = 1;
+            self.player.is_walking = True
 
         #if pygame.mouse.get_pressed()[0]:
         #    print(pygame.mouse.get_pos()) #debug
 
-        if (self.player_is_walking):
-            self.player_position = (self.player_position[0] + (self.player_speed * self.player_facing), self.player_position[1])
+        if (self.player.is_walking):
+            self.player.position = (self.player.position[0] + (self.player.speed * self.player.facing), self.player.position[1])
 
     def draw(self, dt):
         self.drawBackground()
