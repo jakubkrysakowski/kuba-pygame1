@@ -1,7 +1,9 @@
 Gra w języku Python z użyciem biblioteki PyGame.
 
-Artykuł: http://odesk.pl/2017/12/20/pygame-pierwsze-podejscie-do-tworzenia-gry-2d/
-
-[![Podgląd gry na YouTube](https://img.youtube.com/vi/u7qCE_oEdgU/0.jpg)](https://www.youtube.com/watch?v=u7qCE_oEdgU)
+Artykuły na temat rozwoju gry znajdziecie tutaj: http://odesk.pl/category/gra-pygame/
 
 Jeśli chciałbyś pomoć tworzyć tą grę, pisz śmiało.
+
+A tak to wygląda:
+
+![Game screenshot](http://odesk.pl/wp-content/uploads/2018/05/Przechwycenie-obrazu-ekranu_2018-05-17_12-01-24.png)
