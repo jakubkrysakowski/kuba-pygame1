@@ -35,12 +35,12 @@ class Game(object):
         if self.level.foreground_image != None:
             self.screen.blit(self.level.foreground_image, (0,0))
 
-    def drawObjects(self, dt):
-        for row in range(self.level.MAPHEIGHT):
-            for column in range(self.level.MAPWIDTH):
-                textureIndex = self.level.tilemap[row][column]
-                if textureIndex != None:
-                    self.screen.blit(self.level.textures[textureIndex], (column * self.level.TILESIZE, row * self.level.TILESIZE))
+    def drawObjects(self, dt, time):
+        for worldObject in self.level.getObjects(dt, time):
+            self.screen.blit(
+                pygame.transform.rotate(worldObject.image, worldObject.rotation),
+                (worldObject.x, worldObject.y)
+            )
 
     def drawPlayer(self, dt):
         self.screen.blit(self.player.getTile(), (self.player.position_x, self.level.getFloorY(self.player.current_floor) - self.player.HEIGHT))
@@ -79,10 +79,12 @@ class Game(object):
         self.currentRoomName = self.level.getRoomName(self.player.position_x, self.player.current_floor)
 
     def draw(self, dt):
+        time = pygame.time.get_ticks()
+
         self.drawBackground()
-        self.drawObjects(dt)
         self.drawPlayer(dt)
         self.drawForeground()
+        self.drawObjects(dt, time)
         self.drawGui(dt)
         self.click_pointer.draw(self.screen)
         pygame.display.flip()

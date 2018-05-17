@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from roomData import roomData
+from worldObject import worldObject
 
 class Level(object):
     NAME = 'House'
@@ -34,16 +35,12 @@ class Level(object):
     background_color = None
     background_image = None
     foreground_image = None
-    textures = {}
-    tilemap = []
-
-    TILESIZE=64
-    MAPWIDTH=0
-    MAPHEIGHT=0
+    fan_image = None
 
     def __init__(self, pygame):
-        self.background_image = pygame.image.load('./images/home_background.png')
-        self.foreground_image = pygame.image.load('./images/home_foreground.png')
+        self.background_image = pygame.image.load('./images/levels/home/home_background.png')
+        self.foreground_image = pygame.image.load('./images/levels/home/home_foreground.png')
+        self.fan_image = pygame.image.load('./images/levels/home/fan.png')
 
     def getFloorY(self, floor_index):
         return self.FLOOR_Y[floor_index]
@@ -62,3 +59,8 @@ class Level(object):
                 return roomData.name
 
         return ''
+
+    def getObjects(self, dt, time):
+        return [
+            #worldObject(self.fan_image, 130, 130, time * 0.02) #TODO: uncoment and finish it
+        ]
