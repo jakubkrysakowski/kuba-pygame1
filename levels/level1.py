@@ -61,4 +61,4 @@ class Level(object):
             if (roomData.floor == floor and x >= roomData.minX and x <= roomData.maxX):
                 return roomData.name
 
-        return str(x)
+        return ''
