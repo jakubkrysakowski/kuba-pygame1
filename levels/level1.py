@@ -62,5 +62,5 @@ class Level(object):
 
     def getObjects(self, dt, time):
         return [
-            #worldObject(self.fan_image, 130, 130, time * 0.02) #TODO: uncoment and finish it
+            #worldObject(self.fan_image, 830, 140, time * 0.02) #TODO: uncoment and finish it
         ]
