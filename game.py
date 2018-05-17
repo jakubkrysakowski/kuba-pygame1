@@ -37,9 +37,14 @@ class Game(object):
 
     def drawObjects(self, dt, time):
         for worldObject in self.level.getObjects(dt, time):
+            image = pygame.transform.rotate(worldObject.image, worldObject.rotation)
+            imageRectangle = image.get_rect()
+            imageRectangle.center = worldObject.image.get_rect().center
+            imageRectangle = imageRectangle.move(worldObject.x, worldObject.y)
+
             self.screen.blit(
-                pygame.transform.rotate(worldObject.image, worldObject.rotation),
-                (worldObject.x, worldObject.y)
+                image,
+                imageRectangle
             )
 
     def drawPlayer(self, dt):

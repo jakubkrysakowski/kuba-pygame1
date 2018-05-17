@@ -3,6 +3,7 @@
 
 from roomData import roomData
 from worldObject import worldObject
+import math
 
 class Level(object):
     NAME = 'House'
@@ -62,5 +63,10 @@ class Level(object):
 
     def getObjects(self, dt, time):
         return [
-            #worldObject(self.fan_image, 830, 140, time * 0.02) #TODO: uncoment and finish it
+            worldObject(
+                self.fan_image,
+                824,
+                189,
+                math.ceil(time * 0.02)
+            )
         ]
