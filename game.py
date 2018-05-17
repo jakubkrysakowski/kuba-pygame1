@@ -9,6 +9,8 @@ from gui import click_pointer
 class Game(object):
     level = None
     click_pointer = None
+    guiFont = None
+    currentRoomName = ''
 
     def __init__(self, level):
         self.screen = pygame.display.get_surface()
@@ -43,6 +45,10 @@ class Game(object):
     def drawPlayer(self, dt):
         self.screen.blit(self.player.getTile(), (self.player.position_x, self.level.getFloorY(self.player.current_floor) - self.player.HEIGHT))
 
+    def drawGui(self, dt):
+        label = self.guiFont.render(self.currentRoomName, 1, (255,255,0))
+        self.screen.blit(label, (30, self.screen.get_height() - 30))
+
     def eventLoop(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:
@@ -67,11 +73,17 @@ class Game(object):
                 # player is on target floor - go to point
                 self.player.goTo(self.click_pointer, dt)
 
+            self.updateCurrentRoom()
+
+    def updateCurrentRoom(self):
+        self.currentRoomName = self.level.getRoomName(self.player.position_x, self.player.current_floor)
+
     def draw(self, dt):
         self.drawBackground()
         self.drawObjects(dt)
         self.drawPlayer(dt)
         self.drawForeground()
+        self.drawGui(dt)
         self.click_pointer.draw(self.screen)
         pygame.display.flip()
 
@@ -83,5 +95,10 @@ class Game(object):
             self.draw(dt)
             dt = self.clock.tick(self.fps) / 1000.0
 
+    def init(self):
+        self.guiFont = pygame.font.SysFont("monospace", 18)
+        self.updateCurrentRoom()
+
     def run(self):
+        self.init()
         self.main_loop()
