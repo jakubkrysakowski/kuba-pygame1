@@ -52,7 +52,7 @@ class Game(object):
 
     def drawGui(self, dt):
         label = self.guiFont.render(self.currentRoomName, 1, (255,255,0))
-        self.screen.blit(label, (30, self.screen.get_height() - 30))
+        self.screen.blit(label, (30, 30))
 
     def eventLoop(self):
         for event in pygame.event.get():
