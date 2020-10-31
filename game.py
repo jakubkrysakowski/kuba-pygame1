@@ -14,6 +14,7 @@ class Game(object):
 
     def __init__(self, level):
         self.screen = pygame.display.get_surface()
+        print(self.screen.get_size())
         self.player = player.Player()
         self.clock = pygame.time.Clock()
         self.fps = 60
